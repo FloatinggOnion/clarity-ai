@@ -15,6 +15,7 @@ bcrypt = "*"
 cryptography = "*"
 python-multipart = "*"
 passlib = "*"
+supabase = "*"
 
 [dev-packages]
 
