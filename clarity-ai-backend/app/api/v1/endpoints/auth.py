@@ -1,22 +1,34 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
-from dependencies.db import get_db
+from schemas.user import UserCreate, UserLogin
 
-from schemas.user import UserCreate
-
-from services.user_management import get_user_by_email, create_user
+from core.security import create_user, authenticate_user, signout_user
 
 router = APIRouter()
 
-@router.post('register/', tags=['auth'])
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = get_user_by_email(db=db, email=user.email)
+@router.post('/sign-up', tags=['auth'])
+async def register_user(user: UserCreate):
+
+    user_response = await create_user(user=user)
+    user_response = dict(user_response)
     
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+    return user_response
+
+
+@router.post('/login', tags=['auth'])
+async def login_user(user: UserLogin):
+    try:
+        response = authenticate_user(email=user.email, password=user.password)
+        
+        return response
+        
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=str(e))
     
-    user_response = create_user(db=db, user=user)
     
-    return JSONResponse(content={"message": "User created successfully", "user": user_response}, status_code=201)
+@router.post('/logout', tags=['auth'])
+async def logout_user():
+    signout_user()
+    return {"message": "Logout successful"}
