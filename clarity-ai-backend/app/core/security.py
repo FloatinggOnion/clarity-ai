@@ -19,8 +19,7 @@ def create_user(user: UserCreate):
     if auth_response is None:
         raise Exception("User creation failed")
 
-    profile_response = supabase.from_('Profiles').update({'is_onboarded': False, 'subscription_tier': None}).eq('user_id', auth_response.user.id).execute()
-    print(profile_response)
+    profile_response = supabase.from_('profiles').update({'is_onboarded': False, 'subscription_tier': None}).eq('user_id', auth_response.user.id).execute()
     
     response = {
         "user_id": auth_response.user.id,

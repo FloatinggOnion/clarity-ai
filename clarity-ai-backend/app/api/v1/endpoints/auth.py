@@ -11,7 +11,7 @@ router = APIRouter()
 @router.post('/sign-up', tags=['auth'])
 async def register_user(user: UserCreate):
 
-    user_response = await create_user(user=user)
+    user_response = create_user(user=user)
     user_response = dict(user_response)
     
     return user_response
