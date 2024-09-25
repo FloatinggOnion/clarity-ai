@@ -12,6 +12,7 @@ sqlalchemy = "*"
 python-multipart = "*"
 supabase = "*"
 fastapi = {extras = ["standard"], version = "*"}
+psycopg2-binary = "*"
 
 [dev-packages]
 

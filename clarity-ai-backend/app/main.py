@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -6,7 +10,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from models.user import User
 
 from db.session import SessionLocal
-from db.init_db import engine
 
 from api.v1.endpoints import auth, users, documents, subscriptions, vectors
 

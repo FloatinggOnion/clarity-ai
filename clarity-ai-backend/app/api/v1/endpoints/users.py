@@ -13,10 +13,10 @@ router = APIRouter()
 async def get_profile(credentials: HTTPAuthorizationCredentials = Depends(security)):
     try:
         # Verify the token and get the user
-        user = supabase.auth.get_user(credentials.credentials)
-        
+        user = supabase.auth.get_user(credentials.credentials).dict()['user']
+            
         # Fetch the user's profile
-        profile_response = supabase.from_("profiles").select("*").eq("user_id", user.id).execute()
+        profile_response = supabase.from_("profiles").select("*").eq("user_id", user['id']).execute()
         
         if not profile_response.data:
             raise HTTPException(status_code=404, detail="Profile not found")
