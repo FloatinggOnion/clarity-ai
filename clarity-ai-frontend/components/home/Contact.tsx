@@ -12,7 +12,7 @@ const Contact = (props: Props) => {
 		<section className="h-[60vh] w-full flex flex-col items-center space-y-4">
             <div className="text-center space-y-4">
                 <h3 className="text-3xl">Sounds exciting?</h3>
-                <p className="text-neutral-400 text-sm">Be the first to know when we launch.</p>
+                <p className="text-neutral-400 text-md">Be the first to know when we launch.</p>
             </div>
 
             {/* <form action="post" className="flex flex-col gap-4 w-[50%]">
