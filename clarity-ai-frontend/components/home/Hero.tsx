@@ -6,6 +6,7 @@ import { ModeToggle } from "../theme-toggle";
 import { Spotlight } from "../ui/spotlight";
 import { Vortex } from "../ui/vortex";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 type Props = {};
 
@@ -25,9 +26,9 @@ const Hero = (props: Props) => {
 				className="flex flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
 			>
 				<div>
-					<h3 className="text-xl font-bold underline-offset-2 decoration-green-500 flex">
+					<Link href={"/"} className="text-xl font-bold underline-offset-2 decoration-green-500 flex">
 						Clarity<p className="text-green-500 no-underline">AI</p>
-					</h3>
+					</Link>
 				</div>
 				<div
 					className={`text-3xl lg:text-5xl h-full mx-auto flex flex-col justify-center space-y-6`}

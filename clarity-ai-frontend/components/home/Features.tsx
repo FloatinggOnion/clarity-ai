@@ -10,7 +10,7 @@ const Features = (props: Props) => {
 	return (
 		<section
 			id="features"
-			className="h-[100vh] flex flex-col items-center py-24"
+			className="flex flex-col items-center py-16"
 		>
 			<h1 className="flex gap-3 text-xl lg:text-3xl">
 				Deploy your Chatbot in{" "}
