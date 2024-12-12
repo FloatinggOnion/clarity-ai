@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 import { fira_code } from "@/lib/font";
 import "./globals.css";
 
@@ -17,14 +18,16 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${fira_code.className} overflow-x-hidden`}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
-					{children}
-				</ThemeProvider>
+				<ConvexClientProvider>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="dark"
+						enableSystem
+						disableTransitionOnChange
+					>
+						{children}
+					</ThemeProvider>
+				</ConvexClientProvider>
 			</body>
 		</html>
 	);
