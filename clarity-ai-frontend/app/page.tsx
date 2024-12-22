@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import { FloatingNav } from "@/components/ui/floating-navbar";
 import Hero from "@/components/home/Hero";
 import Features from "@/components/home/Features";
 import Contact from "@/components/home/Contact";
+import { fira_code } from "@/lib/font";
 
 export default function Home() {
 	const navItems = [
@@ -21,7 +24,7 @@ export default function Home() {
 	];
 
 	return (
-		<div className="w-full min-h-screen text-white px-10 justify-between">
+		<div className={`${fira_code.className} w-full min-h-screen text-white px-10 justify-between`}>
 			<FloatingNav navItems={navItems} />
 			<Hero />
 			<Features />

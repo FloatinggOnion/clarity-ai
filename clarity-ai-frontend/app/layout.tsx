@@ -1,34 +1,29 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ConvexClientProvider } from "./ConvexClientProvider";
-import { fira_code } from "@/lib/font";
 import "./globals.css";
-
+import ClientProvider from "./ClientProvider";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-	title: "Clarity AI",
-	description: "Your Business. Your Knowledge. In a Chatbot",
+  title: "Clarity AI",
+  description: "Your Business. Your Knowledge. In a Chatbot",
 };
 
 export default function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<html lang="en">
-			<body className={`${fira_code.className} overflow-x-hidden`}>
-				<ConvexClientProvider>
-					<ThemeProvider
-						attribute="class"
-						defaultTheme="dark"
-						enableSystem
-						disableTransitionOnChange
-					>
-						{children}
-					</ThemeProvider>
-				</ConvexClientProvider>
-			</body>
-		</html>
-	);
+  return (
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en">
+        <body className="overflow-x-hidden">
+          <ClientProvider>
+            {children}
+            <Toaster />
+          </ClientProvider>
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
+  );
 }

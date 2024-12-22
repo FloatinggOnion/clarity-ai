@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/moving-border";
-import { ModeToggle } from "../theme-toggle";
 import { Spotlight } from "../ui/spotlight";
 import { Vortex } from "../ui/vortex";
 import { useTheme } from "next-themes";
