@@ -10,8 +10,8 @@ import { useRouter } from "next/navigation";
 type Props = {};
 
 const SignInForm = (props: Props) => {
-	const [action, setAction] = useState<string>("");
 	const { signIn } = useAuthActions();
+	const [action, setAction] = useState<string>("");
 	const [step, setStep] = useState<"signUp" | "signIn">("signIn");
 
 	const { toast } = useToast();

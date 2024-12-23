@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import ClientProvider from "./ClientProvider";
+// import ClientProvider from "./ClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { Toaster } from "@/components/ui/toaster";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 
 export const metadata: Metadata = {
   title: "Clarity AI",
@@ -15,15 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ConvexAuthNextjsServerProvider>
+    // <ConvexAuthNextjsServerProvider>
       <html lang="en">
         <body className="overflow-x-hidden">
-          <ClientProvider>
+          <ConvexClientProvider>
             {children}
             <Toaster />
-          </ClientProvider>
+          </ConvexClientProvider>
         </body>
       </html>
-    </ConvexAuthNextjsServerProvider>
+    // </ConvexAuthNextjsServerProvider>
   );
 }
