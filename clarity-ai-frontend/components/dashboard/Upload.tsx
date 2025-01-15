@@ -5,6 +5,7 @@ import { Form, Input, Button } from "@nextui-org/react";
 import { UploadIcon } from "@radix-ui/react-icons";
 import { IconLoader, IconUpload } from "@tabler/icons-react";
 import { IconFileUpload } from "@tabler/icons-react";
+import { scrape } from "@/convex/ingest/load";
 
 type Props = {};
 

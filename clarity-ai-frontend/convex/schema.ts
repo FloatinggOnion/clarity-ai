@@ -1,60 +1,102 @@
-import { authTables } from "@convex-dev/auth/server";
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+// Convex schema for the application
+import { authTables } from '@convex-dev/auth/server';
+import { defineSchema, defineTable } from 'convex/server';
+import { v } from 'convex/values';
 
 export default defineSchema({
-	// authTables contains the tables for user authentication
 	...authTables,
+  // User collection
+  user: defineTable({
+    organization_id: v.id('organization'), // Foreign key to Organization
+    email: v.string(),
+    password_hash: v.string(),
+    name: v.string(),
+    role: v.string().oneOf(['ADMIN', 'MEMBER']),
+    profile: v.object({
+      contact_details: v.string(),
+      profile_picture: v.string().optional(),
+    }),
+    created_at: v.string(),
+    updated_at: v.string(),
+  }),
 
-	messages: defineTable({
-		// Whether the message is from the AI or the human
-		isViewer: v.boolean(),
-		// Which conversation this message belongs to
-		sessionId: v.string(),
-		// Message content
-		text: v.string(),
-	}).index("bySessionId", ["sessionId"]),
+  // Organization collection
+  organization: defineTable({
+    name: v.string(),
+    created_at: v.string(),
+    updated_at: v.string(),
+  }),
 
-	documents: defineTable({
-		// The original page URL for the document
-		url: v.string(),
-		// The parsed document content
-		text: v.string(),
-	}).index("byUrl", ["url"]),
+  // Subscription collection
+  subscription: defineTable({
+    organization_id: v.id('organization'), // Foreign key linking to Organization
+    plan: v.string().oneOf(['BASIC', 'PRO', 'ENTERPRISE']),
+    status: v.string().oneOf(['ACTIVE', 'CANCELLED', 'PAST_DUE']),
+    start_date: v.string(),
+    end_date: v.string(),
+    payment_method: v.object({
+      type: v.string(), // e.g., "card", "paypal"
+      last4: v.optional(v.string()), // Last 4 digits of card
+      token: v.string(), // Token from payment provider
+    }),
+    created_at: v.string(),
+    updated_at: v.string(),
+  }),
 
-	chunks: defineTable({
-		// Which document this chunk belongs to
-		documentId: v.id("documents"),
-		// The chunk content
-		text: v.string(),
-		// If the chunk has been embedded, which embedding corresponds to it
-		embeddingId: v.union(v.id("embeddings"), v.null()),
-	})
-		.index("byDocumentId", ["documentId"])
-		.index("byEmbeddingId", ["embeddingId"]),
+  // Data Source collection
+  data_source: defineTable({
+    organization_id: v.id('organization'),
+    user_id: v.id('users'),
+    type: v.string().oneOf(['URL', 'PDF', 'VIDEO']),
+    metadata: v.object({
+      title: v.string(),
+      description: v.optional(v.string()),
+    }),
+    chunks: v.array(v.object({
+      chunk_id: v.string(),
+      text: v.string(),
+      embedding: v.array(v.number()),
+    })),
+    created_at: v.string(),
+    updated_at: v.string(),
+  }),
 
-	// the actual embeddings
-	embeddings: defineTable({
-		embedding: v.array(v.number()),
-		chunkId: v.id("chunks"),
-	})
-		.index("byChunkId", ["chunkId"])
-		.vectorIndex("byEmbedding", {
-			vectorField: "embedding",
-			dimensions: 1536,
-		}),
+  // Widget collection
+  widget: defineTable({
+    organization_id: v.id('organization'),
+    name: v.string(),
+    data_source_ids: v.array(v.id('data_source')),
+    color_scheme: v.object({
+      primary: v.string(),
+      secondary: v.string(),
+    }),
+    analytics: v.object({
+      clicks: v.number(),
+      chat_sessions: v.number(),
+      common_questions: v.array(v.string()),
+    }),
+    created_at: v.string(),
+    updated_at: v.string(),
+  }),
+
+  // Integration collection
+  integration: defineTable({
+    organization_id: v.id('organization'),
+    type: v.string().oneOf(['SLACK', 'WHATSAPP', 'ZAPIER']),
+    metadata: v.object({
+      configuration: v.object({}),
+    }),
+    created_at: v.string(),
+    updated_at: v.string(),
+  }),
+
+  // Onboarding Steps collection
+  onboarding_step: defineTable({
+    step_id: v.string(),
+    organization_id: v.id('organization'),
+    step_name: v.string(),
+    completed: v.boolean(),
+    created_at: v.string(),
+    updated_at: v.string(),
+  }),
 });
-
-
-/*  // custom user table example...if you need it
-        users: defineTable({
-        name: v.optional(v.string()),
-        image: v.optional(v.string()),
-        email: v.optional(v.string()),
-        emailVerificationTime: v.optional(v.number()),
-        phone: v.optional(v.string()),
-        phoneVerificationTime: v.optional(v.number()),
-        isAnonymous: v.optional(v.boolean()),
-        // other "users" fields...
-    }).index("email", ["email"]),
-     */
